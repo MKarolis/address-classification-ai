@@ -1,0 +1,4 @@
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+*training_data.xlsx
+/__pycache__
