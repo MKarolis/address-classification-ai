@@ -5,7 +5,6 @@ from constants import MODEL_FILENAME, RANDOM_STATE, TRAINING_DATA_FILENAME
 import numpy as np
 import pandas as pd
 import joblib
-from sklearn.ensemble import RandomForestClassifier
 
 
 from sklearn import preprocessing
@@ -47,7 +46,7 @@ if __name__ == '__main__':
 
     model.fit(features,label)
 
-    predicted = model.predict([[90, 0, 0, 0, 0, 0, 0]])
+    predicted = model.predict([[80, 3, 1, 5, 1, 0, 0]])
     print(predicted)
 
     #joblib.dump(rf, MODEL_FILENAME)
