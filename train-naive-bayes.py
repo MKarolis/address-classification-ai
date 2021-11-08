@@ -10,6 +10,8 @@ import joblib
 from sklearn import preprocessing
 from sklearn.naive_bayes import GaussianNB
 from sklearn.model_selection import train_test_split
+from sklearn import metrics
+
 
 if __name__ == '__main__':
     le = preprocessing.LabelEncoder()
@@ -44,10 +46,18 @@ if __name__ == '__main__':
     features = list(featureFrame.itertuples(index=False, name=None))
     print(features)
 
-    model.fit(features,label)
+    """model.fit(features,label)
 
     predicted = model.predict([[80, 3, 1, 5, 1, 0, 0]])
-    print(predicted)
+    print(predicted)"""
+
+    X_train, X_test, y_train, y_test = train_test_split(features, label, test_size=0.3, random_state=RANDOM_STATE)
+
+    model.fit(X_train, y_train)
+
+    predicted = model.predict(X_test)
+
+    print("Accuracy:", metrics.accuracy_score(y_test, predicted))
 
     #joblib.dump(rf, MODEL_FILENAME)
 
