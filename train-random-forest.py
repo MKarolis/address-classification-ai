@@ -18,7 +18,4 @@ if __name__ == '__main__':
     rf = RandomForestClassifier(n_estimators = 1000, random_state = RANDOM_STATE)
     rf.fit(features, labels)
 
-    predicted = rf.predict([[80, 3, 1, 5, 1, 0, 0]])
-    print(predicted)
-
     #joblib.dump(rf, MODEL_FILENAME)
