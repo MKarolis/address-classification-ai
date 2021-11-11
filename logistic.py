@@ -20,35 +20,35 @@ pd.reset_option('display.max_columns')
 
 raw_data = read_DataFrame_from_file(DATA_INPUT_FILENAME, NUMBER_OF_PARSABLE_RECORDS)
 
-print('\nReading the dataset')
-print('\nRaw Data:')
-print(raw_data.head())
+# print('\nReading the dataset')
+# print('\nRaw Data:')
+# print(raw_data.head())
 
 ### Data Pre-Processing ###
 
-print('\nProcessed Data:')
+# print('\nProcessed Data:')
 addresses = processData(raw_data)
-print(addresses.head())
+# print(addresses.head())
 
 # Checking for missing values
-print('\nMissing values:')
-print(addresses.isnull().sum())
+# print('\nMissing values:')
+# print(addresses.isnull().sum())
 
 
 ### Exploratory Data Analysis ###
 
 # Number of rows and columns of train set
-print('\nNumber of rows and columns:')
-print(addresses.shape)
+# print('\nNumber of rows and columns:')
+# print(addresses.shape)
 
 # Dataset info
-print('Dataset info: ')
-print(addresses.info())
+# print('Dataset info: ')
+# print(addresses.info())
 
 ### Dataset description ###
-print('Dataset description: ')
-description = addresses.describe()
-print(description)
+# print('Dataset description: ')
+# description = addresses.describe()
+# print(description)
 
 
 
@@ -178,6 +178,7 @@ print(description)
 # Count of addresses completed based on comma_separated_entities_having_numbers_near_words
 # sns.countplot(x='label', hue='comma_separated_entities_having_numbers_near_words', data=addresses)
 
+
 ## Analysis of label feature
 
 # Count of the passengers survived
@@ -187,32 +188,72 @@ print(description)
 
 ## Correlation Matrix
 corrMatrix = addresses.corr()
-print(corrMatrix)
+# print(corrMatrix)
+
+
+
+
+import pandas as pd
+import numpy as np
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
+data = addresses.drop('label', axis=1)
+X = data.iloc[:,0:20]  #independent columns
+y = data.iloc[:,-1]    #target column i.e price range
+#apply SelectKBest class to extract top 10 best features
+bestfeatures = SelectKBest(score_func=chi2, k='all')
+fit = bestfeatures.fit(X,y)
+dfscores = pd.DataFrame(fit.scores_)
+dfcolumns = pd.DataFrame(X.columns)
+#concat two dataframes for better visualization 
+featureScores = pd.concat([dfcolumns,dfscores],axis=1)
+featureScores.columns = ['Specs','Score']  #naming the dataframe columns
+# print(featureScores.nlargest(10,'Score'))  #print 10 best features
+
+
+
+import pandas as pd
+import numpy as np
+data = addresses.drop('label', axis=1)
+X = data.iloc[:,0:20]  #independent columns
+y = data.iloc[:,-1]    #target column i.e price range
+from sklearn.ensemble import ExtraTreesClassifier
+import matplotlib.pyplot as plt
+model = ExtraTreesClassifier()
+model.fit(X,y)
+# print(model.feature_importances_) #use inbuilt class feature_importances of tree based classifiers
+#plot graph of feature importances for better visualization
+feat_importances = pd.Series(model.feature_importances_, index=X.columns)
+feat_importances.nlargest(10).plot(kind='barh')
+plt.show()
 
 
 
 ### Model Building ###
 
 # Setting the value for dependent and independent variables
-X = addresses.drop('label', 1)
+# 'label', 'digit_count', 'digits_group_count', 'separated_digits_group_count', 'token_count', 'comma_count', 'comma_separated_entities_having_numbers', 'comma_separated_entities_having_numbers_near_words'
+X = addresses.drop(['label',  'separated_digits_group_count', 'comma_separated_entities_having_numbers_near_words', 'digits_group_count', 'comma_count', 'comma_separated_entities_having_numbers'], axis=1)
 y = addresses.label
+
+print(X.columns.values)
 
 # Splitting the dataset
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.25, random_state=42)
 
 #Fitting the Logistic Regression model
-lr_model = LogisticRegression()
+lr_model = LogisticRegression(solver='lbfgs', max_iter=1000)
 lr_model.fit(X_train, y_train)
 
 #Prediction of test set
 y_pred = lr_model.predict(X_test)
 
 #Predicted values
-print(y_pred)
+# print(y_pred)
 
 #Actual value and the predicted value
-compareValues = pd.DataFrame({'Actual value': y_test, 'Predicted value':y_pred})
-print(compareValues.head())
+# compareValues = pd.DataFrame({'Actual value': y_test, 'Predicted value':y_pred})
+# print(compareValues.head())
 
 #Confusion matrix 
 cnf_matrix = confusion_matrix(y_test, y_pred)
@@ -237,7 +278,8 @@ cnf_matrix = confusion_matrix(y_test, y_pred)
 
 
 # Classification report
-print(classification_report(y_test, y_pred))
+# print(classification_report(y_test, y_pred))
+
 
 print("Accuracy:", metrics.accuracy_score(y_test, y_pred))
 print("Precision:", metrics.precision_score(y_test, y_pred))
@@ -245,7 +287,26 @@ print("Recall:", metrics.recall_score(y_test, y_pred))
 print("f1-score:", metrics.f1_score(y_test, y_pred))
 
 
+# ROC Curve
+
+y_pred_proba = lr_model.predict_proba(X_test)[::,1]
+fpr, tpr, _ = metrics.roc_curve(y_test,  y_pred_proba)
+auc = metrics.roc_auc_score(y_test, y_pred_proba)
+plt.plot(fpr,tpr,label="data 1, auc="+str(auc))
+plt.legend(loc=4)
+plt.show()
+print("AUC: ", auc)
 
 
+# Accuracy: 0.952
+# Precision: 0.9152542372881356
+# Recall: 0.9818181818181818
+# f1-score: 0.9473684210526316
+# AUC:  0.9724350649350649
 
-
+# ['length' 'digit_count' 'token_count']
+# Accuracy: 0.952
+# Precision: 0.9152542372881356
+# Recall: 0.9818181818181818
+# f1-score: 0.9473684210526316
+# AUC:  0.9725
