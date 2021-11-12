@@ -18,16 +18,16 @@ addresses = processData(raw_data)
 ### Model Building ###
 
 # Setting the value for dependent and independent variables
-X = addresses.drop(['label',  'separated_digits_group_count', 'comma_separated_entities_having_numbers_near_words', 'digits_group_count', 'comma_count', 'comma_separated_entities_having_numbers'], axis=1)
+x = addresses.drop(['label',  'separated_digits_group_count', 'comma_separated_entities_having_numbers_near_words', 'digits_group_count', 'comma_count', 'comma_separated_entities_having_numbers'], axis=1)
 y = addresses.label
 
 
 # Splitting the dataset
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+#X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
 #Fitting the Logistic Regression model
 lr_model = LogisticRegression(solver='lbfgs', max_iter=1000)
-lr_model.fit(X_train, y_train)
+lr_model.fit(x, y)
 
 #Prediction of test set
 y_pred = lr_model.predict(X_test)
