@@ -1,7 +1,7 @@
 import pandas as pd
 from utils import read_DataFrame_from_file
 from prepare import PROPERTY_ADDRESS, PROPERTY_LABEL, PROPERTY_SEPARATED_DIGIT_GROUP_COUNT
-from constants import MODEL_FILENAME, RANDOM_STATE, TRAINING_DATA_FILENAME
+from constants import RANDOM_FOREST_MODEL_FILENAME, RANDOM_STATE, TRAINING_DATA_FILENAME
 import numpy as np
 import pandas as pd
 import joblib
@@ -18,4 +18,4 @@ if __name__ == '__main__':
     rf = RandomForestClassifier(n_estimators = 1000, random_state = RANDOM_STATE)
     rf.fit(features, labels)
 
-    #joblib.dump(rf, MODEL_FILENAME)
+    joblib.dump(rf, RANDOM_FOREST_MODEL_FILENAME)
