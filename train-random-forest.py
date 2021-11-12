@@ -18,4 +18,4 @@ if __name__ == '__main__':
     rf = RandomForestClassifier(n_estimators = 1000, random_state = RANDOM_STATE)
     rf.fit(features, labels)
 
-    joblib.dump(rf, MODEL_FILENAME)
+    #joblib.dump(rf, MODEL_FILENAME)
