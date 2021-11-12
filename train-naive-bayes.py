@@ -54,14 +54,20 @@ if __name__ == '__main__':
 
     X_train, X_test, y_train, y_test = train_test_split(features, label, test_size=0.3, random_state=RANDOM_STATE)
 
-    model.fit(X_train, y_train)
+    #model.fit(X_train, y_train)
 
-    predicted = model.predict(X_test)
+    #predicted = model.predict(X_test)
 
     #print("Accuracy:", metrics.accuracy_score(y_test, predicted))
 
     train_features, test_features, train_labels, test_labels = train_test_split(features, label, test_size=0.3,
-                                                                                random_state=109)
+                                                                                random_state=RANDOM_STATE)
+
+    model.fit(train_features, train_labels)
+
+    # predicted = model.predict(test_features)
+    predicted = model.predict([[80, 3, 1, 5, 1, 0, 0]])
+    print('-----------------------> predicted:', predicted)
 
     train_predictions = model.predict(train_features)
     train_accuracy = model.score(train_features, train_labels) * 100.0
