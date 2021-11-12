@@ -74,6 +74,18 @@ def assignProperty(dataFrame: pd.DataFrame, property: str, fun: callable):
     dataFrame[property] = dataFrame.apply(lambda row: fun(row[PROPERTY_ADDRESS]), axis=1)
 
 
+def processData(dataFrame: pd.DataFrame):
+    
+    processedData = pd.DataFrame()
+    processedData[PROPERTY_ADDRESS] = dataFrame['person_address']
+    enrichDataFrameWithProperties(processedData)
+    processedData[PROPERTY_LABEL] = dataFrame['label']
+    
+    processedData.drop(PROPERTY_ADDRESS, axis=1, inplace=True)
+    
+    return processedData
+    
+
 if __name__ == '__main__':
     rawData = read_DataFrame_from_file(DATA_INPUT_FILENAME, NUMBER_OF_PARSABLE_RECORDS)
 
