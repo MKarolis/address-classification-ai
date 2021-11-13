@@ -23,23 +23,23 @@ def process_data(dataFrame: pd.DataFrame):
 def classifier(dataFrame: pd.DataFrame, model: str):
     
     ### Data Pre-Processing ###
-    unclassified_addresses = process_data(dataFrame)
+    unclassified_dataset = process_data(dataFrame)
     
     if model == LOGISTIC_REGRESSION_MODEL_FILENAME:
-        unclassified_addresses.drop([PROPERTY_SEPARATED_DIGIT_GROUP_COUNT, PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS_NEAR_WORDS, PROPERTY_DIGITS_GROUP_COUNT, PROPERTY_COMMA_COUNT, PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS], axis=1, inplace=True)
+        unclassified_dataset.drop([PROPERTY_SEPARATED_DIGIT_GROUP_COUNT, PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS_NEAR_WORDS, PROPERTY_DIGITS_GROUP_COUNT, PROPERTY_COMMA_COUNT, PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS], axis=1, inplace=True)
     else:
-        unclassified_addresses.drop(PROPERTY_SEPARATED_DIGIT_GROUP_COUNT, axis=1, inplace=True)
-        print(unclassified_addresses.head())
+        unclassified_dataset.drop(PROPERTY_SEPARATED_DIGIT_GROUP_COUNT, axis=1, inplace=True)
+        print(unclassified_dataset.head())
 
     ### Load Model ###
     model = joblib.load(model)
     
     ### Prediction of dataset ####
-    classified_addresses = raw_data.copy()
-    complete_column = model.predict(unclassified_addresses)
-    classified_addresses['completed'] = complete_column
+    classified_dataset = raw_data.copy()
+    complete_column = model.predict(unclassified_dataset)
+    classified_dataset['completed'] = complete_column
     
-    return classified_addresses
+    return classified_dataset
 
 if __name__ == '__main__':
 
