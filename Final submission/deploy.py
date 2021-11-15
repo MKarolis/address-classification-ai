@@ -52,9 +52,9 @@ def classify_addresses(dataFrame: pd.DataFrame):
 
     unclassified_dataset.drop(PROPERTY_SEPARATED_DIGIT_GROUP_COUNT, axis=1, inplace=True)
     ### Uncomment the next line if using logistic regression ###
-    unclassified_dataset.drop([PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS_NEAR_WORDS, PROPERTY_DIGITS_GROUP_COUNT, PROPERTY_COMMA_COUNT, PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS], axis=1, inplace=True)
+    # unclassified_dataset.drop([PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS_NEAR_WORDS, PROPERTY_DIGITS_GROUP_COUNT, PROPERTY_COMMA_COUNT, PROPERTY_COMMA_SEPARATED_ENTITIES_HAVING_DIGITS], axis=1, inplace=True)
 
-    ### Load Model ###
+    ### Load Model ###raw
     model = joblib.load(MODEL_FILENAME)
     
     ### Prediction of dataset ####
@@ -82,4 +82,3 @@ if __name__ == '__main__':
     print(classified_addresses.head())
     
     print('\nAll classified addresses saved in ' + DATA_OUTPUT_FILENAME + ' file')
-    
