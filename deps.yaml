@@ -9,3 +9,4 @@ dependencies:
   - openpyxl
   - xlsxwriter
   - joblib
+  - seaborn
