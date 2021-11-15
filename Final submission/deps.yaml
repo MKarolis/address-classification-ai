@@ -1,0 +1,12 @@
+name: deps
+channels:
+  - defaults
+dependencies:
+  - numpy
+  - pandas
+  - scikit-learn
+  - pydot
+  - openpyxl
+  - xlsxwriter
+  - joblib
+  - seaborn

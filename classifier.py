@@ -1,7 +1,7 @@
 
 #Importing the libraries
 import pandas as pd
-from utils import write_DataFrame_to_excel, read_file
+from utils import read_DataFrame_from_excel, write_DataFrame_to_excel, read_dataFrame_from_csv
 from deploy import classify_addresses
 
 DATA_OUTPUT_FILENAME = 'classified.xlsx'
@@ -10,13 +10,13 @@ DATA_OUTPUT_FILENAME = 'classified.xlsx'
 if __name__ == '__main__':
     
     ### Getting filename ###
-    filename = input('Enter a txt filename with the addresses data that you wish to classify (e.g. input.txt):\n> ')
+    filename: str = input('Enter a txt filename with the addresses data that you wish to classify (e.g. input.txt):\n> ')
 
     ### Reading the dataset ###
-    unclassified_addresses = read_file(filename)
+    unclassified_addresses = read_DataFrame_from_excel(filename) if filename.endswith('.xlsx') else read_dataFrame_from_csv(filename)
     
     ### Classify addresses ###
-    classified_addresses = classify_addresses(raw_data)
+    classified_addresses = classify_addresses(unclassified_addresses)
 
     ### Writing the classified dataset ###
     write_DataFrame_to_excel(classified_addresses, DATA_OUTPUT_FILENAME)

@@ -5,7 +5,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
 from prepare import DATA_INPUT_FILENAME, NUMBER_OF_PARSABLE_RECORDS, PROPERTY_ADDRESS, enrichDataFrameWithProperties, PROPERTY_LABEL, processData
-from utils import read_DataFrame_from_file
+from utils import read_DataFrame_from_excel
 
 from sklearn import metrics
 from sklearn.linear_model import LogisticRegression
@@ -18,7 +18,7 @@ pd.reset_option('display.max_columns')
 
 ### Reading the dataset ###
 
-raw_data = read_DataFrame_from_file(DATA_INPUT_FILENAME, NUMBER_OF_PARSABLE_RECORDS)
+raw_data = read_DataFrame_from_excel(DATA_INPUT_FILENAME, NUMBER_OF_PARSABLE_RECORDS)
 
 # print('\nReading the dataset')
 # print('\nRaw Data:')
